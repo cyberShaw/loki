@@ -3,10 +3,14 @@ import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
 
 import * as Location from "expo-location";
 
+// Utils
+import { useNavigation } from '../utils'
+
 const screenWidth = Dimensions.get("screen").width;
 
 export const SplashScreen = () => {
   // Hooks
+  const { navigate } = useNavigation();
   const [errorMsg, setErrorMsg] = useState("");
   const [address, setAddress] = useState<Location.Address>()
   const [displayAddress, setDisplayAddress] = useState("Waiting for Current Location");
@@ -27,13 +31,19 @@ export const SplashScreen = () => {
                     setAddress(item)
                     let currentAddress = `${item.name}, ${item.street}, ${item.postalCode}, ${item.country}`;
                     setDisplayAddress(currentAddress)
+
+                    if(currentAddress.length > 0) {
+                        setTimeout(() => {
+                            navigate('homeStack')
+                        }, 3000)
+                    }
                     return
                 }
             } else {
 
             }
         }
-    )
+    )();
   }, [])
 
   return (
